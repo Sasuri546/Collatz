@@ -2,57 +2,53 @@ package CharlieJacobson;
 
 public class MainCollatzProgram {
 
-    static int row = 24;
+    int row = 3;
 
     public static void main(String[] args) {
-        int total = 0;
-        int[] maxPower = new int[]{3, 4};
-        for (int i = 0; i < Math.pow(2, row)/4; i++) {
-            int start = 4*i + 3;
-            int[] n = new int[]{start, 0};
+        MainCollatzProgram main = new MainCollatzProgram();
+        long total = 0;
+        long[] maxPower = new long[]{3, 4};
+        for (int i = 0; i < Math.pow(2, main.row)/4; i++) {
+            long start = 4*i + 3;
+            long[] n = new long[]{start, 0};
             int k = 0;
             while ((Math.pow(3, k) >= Math.pow(2, n[1]))) {
-                n = successor(n);
+                n = main.successor(n);
                 k++;
             }
-            int power = n[1];
+            long power = n[1];
             while (Math.pow(3, k) < Math.pow(2, power)) {
                 power--;
             }
             power++;
+            if (power > main.row) {
+                total++;
+
+            }
             System.out.println("Number: " + start + ", Divisible by: 2^" + power);
             if (Math.max(maxPower[1], power) != maxPower[1]) {
-                maxPower = new int[]{start, power};
+                maxPower = new long[]{start, power};
             }
-            if (power > row) total++;
-        }
-        System.out.println("For divisibility " + Math.pow(2,row) + ": " + total + "/" + Math.pow(2,row) + " unknown cases remain");
-        System.out.println(total/Math.pow(2,row));
-        /*
-        int[] n = new int[]{82261083, 0};
-        while (successor(n)[1] < 135) {
-            n = successor(n);
-        }
-        System.out.println(n[0]);
 
-         */
+        }
+        System.out.println("For divisibility " + Math.pow(2,main.row) + ": " + total + "/" + Math.pow(2,main.row) + " unknown cases remain");
+        System.out.println(((double) total)/Math.pow(2,main.row));
     }
 
-    //Takes in a 2-tuple of integers
-    private static int[] successor(int[] n) {
-        int suc = 3*n[0] + 1;
-        int twofac = n[1];
+    private long[] successor(long[] n) {
+        long twofac = n[1];
+        long suc;
+        if (n[0] % 2 == 0) {
+            suc = n[0]/2;
+            twofac++;
+        } else {
+            suc = 3*n[0] + 1;
+        }
         while (suc % 2 == 0) {
             twofac++;
             suc = suc/2;
         }
-        return new int[]{suc, twofac};
+        return new long[]{suc, twofac};
     }
-
-    /*for (int i = 0; i < 50; i++) {
-            int n = 64*i + 21;
-            int[] suc = successor(new int[]{n, 0});
-            System.out.println("Number: " + n + ", Successor: " + suc[0] + ", Factors of Two: " + suc[1]);
-        }*/
 
 }
